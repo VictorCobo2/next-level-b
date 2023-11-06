@@ -54,6 +54,16 @@ export const getCursos = async (req: Request, res: Response) => {
   }
 };
 
+export const getVideoCurso = async (req: Request, res: Response) => {
+  try {
+    const {_id} = req.params
+    const COURSE = await course_model.findOne({_id}).populate("teacher_id");
+    COURSE ? res.sendFile(COURSE.video_url) : msg_("PZ", "No se encontro el curso", res);
+  } catch (error) {
+    res.json({ msg: error }).status(400);
+  }
+};
+
 export const getCursosTeacher = async (req: Request, res: Response) => {
   try {
     const { teacher_id } = req.params;
