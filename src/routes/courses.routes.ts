@@ -3,13 +3,15 @@ import multer from 'multer';
 import { DisLikeCurso, getCursos, getCursosTeacher, likeCurso, subirCurso } from "../controllers/course.controllers";
 
 export const COURSE_ROUTE = Router();
+export let VIDEO_UBI = ""
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, './videos');
     },
     filename: (req, file, cb) => {
-      cb(null, file.fieldname + '-' + Date.now() + file.originalname);
+      VIDEO_UBI = `${file.fieldname + '-' + Date.now() + file.originalname}`
+      cb(null, VIDEO_UBI);
     },
   });
   

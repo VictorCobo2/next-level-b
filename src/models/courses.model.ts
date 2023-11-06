@@ -1,5 +1,13 @@
 import { ObjectId, Schema, Types, model } from "mongoose";
 
+interface asks {
+  ask: string;
+  answers: [answers];
+}
+interface answers {
+  name: string;
+  score: string;
+}
 interface course {
   title: string;
   description: string;
@@ -8,6 +16,7 @@ interface course {
   video_url: string;
   like: number;
   dislike: number;
+  asks: [asks];
 }
 
 const course_schema = new Schema<course>({
@@ -38,6 +47,10 @@ const course_schema = new Schema<course>({
   dislike: {
     type: Number,
     default: 0,
+  },
+  asks: {
+    type: [],
+    required: true,
   },
 });
 

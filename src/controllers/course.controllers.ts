@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
+import path from "path";
 import { arrayMsgProps_, msg_ } from "./global.controllers";
 import * as cloudinary from "cloudinary";
 import { course_model } from "../models/courses.model";
+import { VIDEO_UBI } from "../routes";
 
 cloudinary.v2.config({
   cloud_name: "dell1ax0s",
@@ -17,12 +19,9 @@ export const subirCurso = async (req: any, res: Response) => {
         .status(400)
         .json({ error: "No se ha proporcionado un archivo de video." });
     }
+    const ubicacionVideo = path.join(__dirname, "..", "..") + "\\" + "videos" + "\\";
 
-    const resultado = await cloudinary.v2.uploader.upload(file.path, {
-      resource_type: "video",
-    });
-
-    req.body.video_url = resultado.url;
+    req.body.video_url = ubicacionVideo + VIDEO_UBI;
 
     new course_model(req.body)
       .save()
@@ -57,14 +56,15 @@ export const getCursos = async (req: Request, res: Response) => {
 
 export const getCursosTeacher = async (req: Request, res: Response) => {
   try {
-    const {teacher_id} = req.params
-    const COURSE = await course_model.find({teacher_id}).populate("teacher_id");
+    const { teacher_id } = req.params;
+    const COURSE = await course_model
+      .find({ teacher_id })
+      .populate("teacher_id");
     COURSE.length > 0 ? res.json(COURSE) : msg_("PZ", "No hay cursos", res);
   } catch (error) {
     res.json({ msg: error }).status(400);
   }
 };
-
 
 export const likeCurso = async (req: Request, res: Response) => {
   try {
