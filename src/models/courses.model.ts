@@ -17,6 +17,7 @@ interface course {
   like: number;
   dislike: number;
   asks: [asks];
+  max_points:number
 }
 
 const course_schema = new Schema<course>({
@@ -51,6 +52,10 @@ const course_schema = new Schema<course>({
   },
   asks: {
     type: [],
+    required: true,
+  },
+  max_points: {
+    type: Number,
     required: true,
   },
 });
