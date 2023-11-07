@@ -27,6 +27,7 @@ APP.use(express.json());
 
 APP.use("/api/user", routes.USERS_ROUTES)
 APP.use("/api/courses", routes.COURSE_ROUTE)
+APP.use("/api/quiz", routes.QUIZ_ANSWERS_ROUTES)
 
 APP.get("/api", (req, res) => {
   res.send("API ready");

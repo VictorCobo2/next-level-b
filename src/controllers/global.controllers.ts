@@ -38,6 +38,7 @@ export const findMsg_ = (
     { code: "05", msg: `Curso creado correctamente`, tipo: "success", _id, data },
     { code: "06", msg: `${campo} agregado correctamente`, tipo: "success", _id, data },
     { code: "07", msg: `Cuestionario creado correctamente`, tipo: "success", _id, data },
+    { code: "08", msg: `Respuesta guardada correctamente`, tipo: "success", _id, data },
     { code: "PZ", msg: `${campo}`, tipo: "info" }
   ];
   const RES = MSG.find((e) => e.code == code);
