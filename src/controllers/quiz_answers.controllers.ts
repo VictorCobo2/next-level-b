@@ -27,10 +27,14 @@ export const guardarResultado = async (req: Request, res: Response) => {
 export const getResultStudent = async (req: Request, res: Response) => {
   try {
     const { student_id, course_id } = req.params;
-    const QUIZ_ANSWERS = await quiz_answers_model.findOne({$and:[{student_id}, {course_id}]}).populate(["student_id", "course_id"]);
-    QUIZ_ANSWERS ? res.json(QUIZ_ANSWERS) : msg_("PZ", "No hay respuestas", res);
+    const QUIZ_ANSWERS = await quiz_answers_model
+      .findOne({ $and: [{ student_id }, { course_id }] })
+      .populate(["student_id", "course_id"]);
+    QUIZ_ANSWERS
+      ? res.json(QUIZ_ANSWERS)
+      : msg_("PZ", "No hay respuestas", res);
   } catch (error) {
-    console.log("🍑  error", error)
+    console.log("🍑  error", error);
     res.json({ msg: error }).status(400);
   }
 };
@@ -38,11 +42,47 @@ export const getResultStudent = async (req: Request, res: Response) => {
 export const getResultCourse = async (req: Request, res: Response) => {
   try {
     const { course_id } = req.params;
-    const QUIZ_ANSWERS = await quiz_answers_model.find({course_id}).populate(["student_id", "course_id"]);
-    QUIZ_ANSWERS ? res.json(QUIZ_ANSWERS) : msg_("PZ", "No hay respuestas", res);
+    const QUIZ_ANSWERS = await quiz_answers_model
+      .find({ course_id })
+      .populate(["student_id", "course_id"]);
+    QUIZ_ANSWERS
+      ? res.json(QUIZ_ANSWERS)
+      : msg_("PZ", "No hay respuestas", res);
   } catch (error) {
-    console.log("🍑  error", error)
+    console.log("🍑  error", error);
     res.json({ msg: error }).status(400);
   }
 };
 
+export const getResultTeacher = async (req: Request, res: Response) => {
+  try {
+    const { teacher_id } = req.params;
+    const QUIZ_ANSWERS = await quiz_answers_model.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "student_id",
+          foreignField: "_id",
+          as: "student",
+        },
+      },
+      {
+        $lookup: {
+          from: "courses", 
+          localField: "course_id",
+          foreignField: "_id",
+          as: "course",
+        },
+      },
+      {
+        $unwind: "$course",
+      },
+    ]).match({"course.teacher_id":teacher_id});
+    QUIZ_ANSWERS
+      ? res.json(QUIZ_ANSWERS)
+      : msg_("PZ", "No hay respuestas", res);
+  } catch (error) {
+    console.log("🍑  error", error);
+    res.json({ msg: error }).status(400);
+  }
+};
