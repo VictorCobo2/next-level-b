@@ -77,9 +77,14 @@ export const getResultTeacher = async (req: Request, res: Response) => {
       {
         $unwind: "$course",
       },
-    ]).match({"course.teacher_id":teacher_id});
+    ])
+    // .match({"course.teacher_id":teacher_id});
+    const new_responde = QUIZ_ANSWERS.filter((data) => {
+      return data.course.teacher_id.toString() === teacher_id 
+    })
+    
     QUIZ_ANSWERS
-      ? res.json(QUIZ_ANSWERS)
+      ? res.json(new_responde)
       : msg_("PZ", "No hay respuestas", res);
   } catch (error) {
     console.log("🍑  error", error);
