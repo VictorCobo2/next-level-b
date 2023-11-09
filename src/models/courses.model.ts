@@ -35,7 +35,7 @@ const course_schema = new Schema<course>({
   },
   miniature_url: {
     type: String,
-    default:"https://media.discordapp.net/attachments/1038606888977313833/1170934839810195547/logoNextLevel.png?ex=655ad90c&is=6548640c&hm=74dcf0832ad321dbf9210f3b365ba90f357cd5817713e07b05e7d696c4bbe70a&=&width=662&height=662"
+    default:"https://cdn.discordapp.com/attachments/1038606888977313833/1172244688368042014/next-level-color-logo.png?ex=655f9cf0&is=654d27f0&hm=0c161d71a3beb4d3a206d0aeb2c037d1af75a05af99129d7406c644c2ea4c7fe&"
     // required: true,
   },
   video_url: {
