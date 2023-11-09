@@ -95,7 +95,7 @@ export const DisLikeCurso = async (req: Request, res: Response) => {
     const { _id } = req.params;
     let COURSE = await course_model.findOne({ _id });
     if (COURSE) {
-      if (COURSE.like > 0) COURSE.like = COURSE.like - 1;
+      COURSE.dislike = COURSE.dislike + 1;
       const COURSE_EDIT = await course_model.findOneAndReplace({ _id }, COURSE);
       msg_("06", "Dislike", res, COURSE._id, COURSE);
     }
