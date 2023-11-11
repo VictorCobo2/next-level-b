@@ -124,6 +124,6 @@ export const addCommnet = async (req: Request, res: Response) => {
         },
       }
     );
-    if (USER) msg_("01", "editado", res, USER._id, USER);
+    if (USER) msg_("09", "editado", res);
   } catch (error) {}
 };
