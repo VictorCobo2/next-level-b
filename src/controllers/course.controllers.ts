@@ -19,7 +19,8 @@ export const subirCurso = async (req: any, res: Response) => {
         .status(400)
         .json({ error: "No se ha proporcionado un archivo de video." });
     }
-    const ubicacionVideo = path.join(__dirname, "..", "..") + "\\" + "videos" + "\\";
+    const ubicacionVideo =
+      path.join(__dirname, "..", "..") + "\\" + "videos" + "\\";
 
     req.body.video_url = ubicacionVideo + VIDEO_UBI;
 
@@ -47,7 +48,9 @@ export const subirCurso = async (req: any, res: Response) => {
 
 export const getCursos = async (req: Request, res: Response) => {
   try {
-    const COURSE = await course_model.find({}).populate("teacher_id");
+    const COURSE = await course_model
+      .find({})
+      .populate(["teacher_id", "comments.student_id"]);
     COURSE.length > 0 ? res.json(COURSE) : msg_("PZ", "No hay cursos", res);
   } catch (error) {
     res.json({ msg: error }).status(400);
@@ -56,9 +59,11 @@ export const getCursos = async (req: Request, res: Response) => {
 
 export const getVideoCurso = async (req: Request, res: Response) => {
   try {
-    const {_id} = req.params
-    const COURSE = await course_model.findOne({_id}).populate("teacher_id");
-    COURSE ? res.sendFile(COURSE.video_url) : msg_("PZ", "No se encontro el curso", res);
+    const { _id } = req.params;
+    const COURSE = await course_model.findOne({ _id }).populate("teacher_id");
+    COURSE
+      ? res.sendFile(COURSE.video_url)
+      : msg_("PZ", "No se encontro el curso", res);
   } catch (error) {
     res.json({ msg: error }).status(400);
   }
@@ -66,10 +71,12 @@ export const getVideoCurso = async (req: Request, res: Response) => {
 
 export const getCursosTeacher = async (req: Request, res: Response) => {
   try {
+    console.log("gola PERORO");
+
     const { teacher_id } = req.params;
     const COURSE = await course_model
       .find({ teacher_id })
-      .populate("teacher_id");
+      .populate(["teacher_id", "comments.student_id"]);
     COURSE.length > 0 ? res.json(COURSE) : msg_("PZ", "No hay cursos", res);
   } catch (error) {
     res.json({ msg: error }).status(400);
@@ -102,4 +109,21 @@ export const DisLikeCurso = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.json({ msg: error }).status(400);
   }
+};
+
+export const addCommnet = async (req: Request, res: Response) => {
+  try {
+    const { course_id } = req.params;
+    const { student_id, comment } = req.body;
+
+    const USER = await course_model.findOneAndUpdate(
+      { _id: course_id },
+      {
+        $push: {
+          comments: [{ student_id, comment }],
+        },
+      }
+    );
+    if (USER) msg_("01", "editado", res, USER._id, USER);
+  } catch (error) {}
 };
