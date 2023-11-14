@@ -31,4 +31,4 @@ COURSE_ROUTE.get("/courses-teacher/:teacher_id", getCursosTeacher);
 COURSE_ROUTE.get("/like/:_id", likeCurso);
 COURSE_ROUTE.get("/video/:_id", getVideoCurso);
 COURSE_ROUTE.get("/dislike/:_id", DisLikeCurso);
-COURSE_ROUTE.get("/commnet/:course_id", addCommnet);
+COURSE_ROUTE.put("/commnet/:course_id", addCommnet);

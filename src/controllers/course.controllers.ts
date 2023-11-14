@@ -71,8 +71,6 @@ export const getVideoCurso = async (req: Request, res: Response) => {
 
 export const getCursosTeacher = async (req: Request, res: Response) => {
   try {
-    console.log("gola PERORO");
-
     const { teacher_id } = req.params;
     const COURSE = await course_model
       .find({ teacher_id })
