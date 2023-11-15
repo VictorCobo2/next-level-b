@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
+import cors from 'cors'
 import * as routes from "./src/routes";
 console.clear()
 
@@ -8,19 +9,7 @@ const PORT = process.env.PORT || 3000;
 const MONGO_URI = "mongodb+srv://eonia:zjmT7cYAZEQ8WXem@eonia.vij6j1u.mongodb.net/NEXT-LEVEL";
 
 
-APP.use((req: Request, res: Response, next: NextFunction) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Authorization, x_token ,X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method"
-  );
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, DELETE, PATCH"
-  );
-  res.header("Allow", "GET, POST, OPTIONS, PUT, DELETE, PATCH");
-  next();
-});
+APP.use(cors());
 
 APP.use(express.json());
 
